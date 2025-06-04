@@ -67,7 +67,7 @@ with DAG(
             "version": "2.2",  # Specify Dataproc version (if needed),
              
             "properties": {
-            "spark.executor.instances": "1",
+            "spark.executor.instances": "2",
             "spark.executor.cores": "2",
             "spark.executor.memory": "2g",
             "spark.driver.cores": "2",
