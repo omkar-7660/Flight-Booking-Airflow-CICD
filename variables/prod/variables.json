@@ -7,5 +7,30 @@
       "transformed_table": "transformed_flight_data_prod",
       "route_insights_table": "route_insights_prod",
       "origin_insights_table": "origin_insights_prod"
-    }
+    },
+    "REGION" : "us-central1",
+    "CLUSTER_NAME" : "dataproc-cluster-demo",
+    
+    "CLUSTER_CONFIG" : {
+        "master_config": {
+            "num_instances": 1,
+            "machine_type_uri": "n1-standard-2",
+            "disk_config": {
+                "boot_disk_type": "pd-standard",
+                "boot_disk_size_gb": 30
+            }
+        },
+        "worker_config": {
+            "num_instances": 2,
+            "machine_type_uri": "n1-standard-2",
+            "disk_config": {
+                "boot_disk_type": "pd-standard",
+                "boot_disk_size_gb": 30
+            }
+        },
+        "software_config": {
+            "image_version": "2.2.26-debian12"
+        }
+      }
+      
   }
