@@ -29,11 +29,24 @@ jobs:
           project_id: ${{ secrets.GCP_PROJECT_ID }}
 
       # Upload `variables.json` to Composer bucket
+      #Here, we are uploading the variables.json file to the data folder of the airflow-dev composer
+      #here dev folder is not available in the bucket, so it will be created automatically
+
+
       - name: Upload Variables JSON to GCS
         run: |
           gsutil cp variables/dev/variables.json gs://us-central1-airflow-dev-58492a0c-bucket/data/dev/variables.json
 
       # Import Variables into Airflow-DEV
+      #Below if you see the path used for importing the variables.json file is not the same as the one
+      #we used for uploading the file to the bucket, this is because the path used for importing
+      #the variables.json file is the ultimatly the GC bucket path but under the home directory of airflow.
+      #It does mean that the original google cloud bucket path is mounted to the home directory of airflow.
+      # Indirectly, we are importing the variables.json file from the home directory of airflow.
+      # This imported variables you can us them into the airflow DAGs. Previously we were doing manually
+      # by using the Airflow UI Admin -> Variables section.
+      # Now, we are automating this process by using the gcloud command.
+
       - name: Import Variables into Airflow-DEV
         run: |
           gcloud composer environments run airflow-dev \
@@ -53,6 +66,8 @@ jobs:
             --location us-central1 \
             --source airflow_job/airflow_job.py
 
+  # Job to upload to production environment
+  # This job will only run when there is a push to the main branch (when PR is merged).
   upload-to-prod:
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
